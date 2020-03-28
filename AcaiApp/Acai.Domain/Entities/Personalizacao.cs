@@ -8,6 +8,6 @@ namespace Acai.Domain.Entities
         public decimal ValorAdicional { get; set; }
         public double TempoPreparoAdicional { get; set; }
 
-        public virtual IEnumerable<Produto> Produtos { get; set; }
+        public virtual IEnumerable<ProdutoPersonalizacao> ProdutoPersonalizacoes { get; set; }
     }
 }

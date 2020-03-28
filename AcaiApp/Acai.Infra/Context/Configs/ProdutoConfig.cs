@@ -7,12 +7,28 @@ namespace Acai.Infra.Context.Configs
     {
         public void Run(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Produto>().ToTable("Produto");
-            modelBuilder.Entity<Produto>().HasKey(p => p.Id);
-            modelBuilder.Entity<Produto>().Property(p => p.Id).IsRequired().UseIdentityColumn();
-            modelBuilder.Entity<Produto>().HasOne(p => p.Tamanho).WithMany(t => t.Produtos).IsRequired();
-            modelBuilder.Entity<Produto>().HasOne(p => p.Sabor).WithMany(s => s.Produtos).IsRequired();
+            modelBuilder.Entity<Produto>()
+                .ToTable("Produto");
 
+            modelBuilder.Entity<Produto>()
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<Produto>()
+                .Property(p => p.Id)
+                .IsRequired()
+                .UseSqlServerIdentityColumn();
+
+            modelBuilder.Entity<Produto>()
+                .HasOne(p => p.Tamanho)
+                .WithMany(t => t.Produtos)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Produto>()
+                .HasOne(p => p.Sabor)
+                .WithMany(s => s.Produtos)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

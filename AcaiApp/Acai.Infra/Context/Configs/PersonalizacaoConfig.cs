@@ -7,11 +7,24 @@ namespace Acai.Infra.Context.Configs
     {
         public void Run(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Personalizacao>().ToTable("Personalizacao");
-            modelBuilder.Entity<Personalizacao>().HasKey(p => p.Id);
-            modelBuilder.Entity<Personalizacao>().Property(p => p.Id).IsRequired().UseIdentityColumn();
-            modelBuilder.Entity<Personalizacao>().Property(p => p.TempoPreparoAdicional).IsRequired();
-            modelBuilder.Entity<Personalizacao>().Property(p => p.ValorAdicional).IsRequired();
+            modelBuilder.Entity<Personalizacao>()
+                .ToTable("Personalizacao");
+
+            modelBuilder.Entity<Personalizacao>()
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<Personalizacao>()
+                .Property(p => p.Id)
+                .IsRequired()
+                .UseSqlServerIdentityColumn();
+
+            modelBuilder.Entity<Personalizacao>()
+                .Property(p => p.TempoPreparoAdicional)
+                .IsRequired();
+
+            modelBuilder.Entity<Personalizacao>()
+                .Property(p => p.ValorAdicional)
+                .IsRequired();
         }
     }
 }

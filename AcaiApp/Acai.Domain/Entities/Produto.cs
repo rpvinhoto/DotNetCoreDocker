@@ -11,6 +11,6 @@ namespace Acai.Domain.Entities
         public Tamanho Tamanho { get; set; }
         public Sabor Sabor { get; set; }
         public IEnumerable<Pedido> Pedidos { get; set; }
-        public IEnumerable<Personalizacao> Personalizacoes { get; set; }
+        public IEnumerable<ProdutoPersonalizacao> ProdutoPersonalizacoes { get; set; }
     }
 }

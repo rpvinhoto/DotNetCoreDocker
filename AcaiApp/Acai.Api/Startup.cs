@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Acai.Application.AppServices;
+using Acai.Application.Interfaces;
+using Acai.Domain.Interfaces.Repositories;
+using Acai.Domain.Interfaces.Services;
+using Acai.Domain.Services;
+using Acai.Infra.Context;
+using Acai.Infra.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Acai.Api
 {
     public class Startup
     {
+        private const string CONECTION_STRING = "AcaiDbConnection";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -21,13 +25,22 @@ namespace Acai.Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<AcaiContext>(options => options.UseSqlServer(Configuration.GetConnectionString(CONECTION_STRING)));
+
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+            services.AddScoped(typeof(IGenericAppService<>), typeof(GenericAppService<>));
+            services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+
+            services.AddTransient<ISaborAppService, SaborAppService>();
+            services.AddTransient<ISaborService, SaborService>();
+            services.AddTransient<ISaborRepository, SaborRepository>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

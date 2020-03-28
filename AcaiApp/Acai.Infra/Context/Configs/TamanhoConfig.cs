@@ -7,12 +7,29 @@ namespace Acai.Infra.Context.Configs
     {
         public void Run(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Tamanho>().ToTable("Tamanho");
-            modelBuilder.Entity<Tamanho>().HasKey(t => t.Id);
-            modelBuilder.Entity<Tamanho>().Property(t => t.Id).IsRequired().UseIdentityColumn();
-            modelBuilder.Entity<Tamanho>().Property(t => t.Descricao).IsRequired().HasMaxLength(100);
-            modelBuilder.Entity<Tamanho>().Property(t => t.Valor).IsRequired();
-            modelBuilder.Entity<Tamanho>().Property(t => t.TempoPreparo).IsRequired();
+            modelBuilder.Entity<Tamanho>()
+                .ToTable("Tamanho");
+
+            modelBuilder.Entity<Tamanho>()
+                .HasKey(t => t.Id);
+
+            modelBuilder.Entity<Tamanho>()
+                .Property(t => t.Id)
+                .IsRequired()
+                .UseSqlServerIdentityColumn();
+
+            modelBuilder.Entity<Tamanho>()
+                .Property(t => t.Descricao)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<Tamanho>()
+                .Property(t => t.Valor)
+                .IsRequired();
+
+            modelBuilder.Entity<Tamanho>()
+                .Property(t => t.TempoPreparo)
+                .IsRequired();
         }
     }
 }
