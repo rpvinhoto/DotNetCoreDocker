@@ -39,7 +39,10 @@ namespace Acai.Infra.Repositories
 
         public T GetById(int id)
         {
-            return _dbSet.Find(id);
+            var entity = _dbSet.Find(id);
+            _dbContext.Entry(entity).State = EntityState.Detached;
+
+            return entity;
         }
 
         public void Update(T entity)

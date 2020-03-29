@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Acai.Infra.Migrations
 {
     [DbContext(typeof(AcaiContext))]
-    [Migration("20200328194653_Inicial")]
+    [Migration("20200329044738_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,10 @@ namespace Acai.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
                     b.Property<double>("TempoPreparoAdicional");
 
                     b.Property<decimal>("ValorAdicional");
@@ -56,6 +60,12 @@ namespace Acai.Infra.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Personalizacao");
+
+                    b.HasData(
+                        new { Id = 1, Descricao = "Leite ninho", TempoPreparoAdicional = 0.0, ValorAdicional = 3m },
+                        new { Id = 2, Descricao = "Granola", TempoPreparoAdicional = 0.0, ValorAdicional = 0m },
+                        new { Id = 3, Descricao = "Paçoca", TempoPreparoAdicional = 3.0, ValorAdicional = 3m }
+                    );
                 });
 
             modelBuilder.Entity("Acai.Domain.Entities.Produto", b =>
@@ -106,15 +116,15 @@ namespace Acai.Infra.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<double?>("TempoPreparoAdicional");
+                    b.Property<double>("TempoPreparoAdicional");
 
                     b.HasKey("Id");
 
                     b.ToTable("Sabor");
 
                     b.HasData(
-                        new { Id = 1, Descricao = "Morango" },
-                        new { Id = 2, Descricao = "Banana" },
+                        new { Id = 1, Descricao = "Morango", TempoPreparoAdicional = 0.0 },
+                        new { Id = 2, Descricao = "Banana", TempoPreparoAdicional = 0.0 },
                         new { Id = 3, Descricao = "Kiwi", TempoPreparoAdicional = 5.0 }
                     );
                 });
@@ -136,6 +146,12 @@ namespace Acai.Infra.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tamanho");
+
+                    b.HasData(
+                        new { Id = 1, Descricao = "Pequeno", TempoPreparo = 5.0, Valor = 10m },
+                        new { Id = 2, Descricao = "Médio", TempoPreparo = 7.0, Valor = 13m },
+                        new { Id = 3, Descricao = "Grande", TempoPreparo = 10.0, Valor = 15m }
+                    );
                 });
 
             modelBuilder.Entity("Acai.Domain.Entities.Pedido", b =>

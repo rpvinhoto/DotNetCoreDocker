@@ -1,13 +1,17 @@
 ﻿using Acai.Domain.Entities;
 using System;
-using System.Threading.Tasks;
 
 namespace Acai.Domain.Interfaces.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<Sabor> SaborRepository { get; }
+        IPedidoRepository PedidoRepository { get; }
+        IPersonalizacaoRepository PersonalizacaoRepository { get; }
+        IProdutoRepository ProdutoRepository { get; }
+        IProdutoPersonalizacaoRepository ProdutoPersonalizacaoRepository { get; }
+        ISaborRepository SaborRepository { get; }
+        ITamanhoRepository TamanhoRepository { get; }
 
-        Task Commit();
+        void Commit();
     }
 }

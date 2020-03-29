@@ -22,8 +22,6 @@ namespace Acai.Infra.Context.Configs
                 .Property(s => s.Descricao)
                 .IsRequired()
                 .HasMaxLength(100);
-
-            //ToDo modelBuilder.Entity<Sabor>().Property(s => s.TempoPreparoAdicional);
         }
     }
 }

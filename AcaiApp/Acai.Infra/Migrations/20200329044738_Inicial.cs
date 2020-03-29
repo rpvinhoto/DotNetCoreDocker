@@ -14,6 +14,7 @@ namespace Acai.Infra.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Descricao = table.Column<string>(maxLength: 100, nullable: false),
                     ValorAdicional = table.Column<decimal>(nullable: false),
                     TempoPreparoAdicional = table.Column<double>(nullable: false)
                 },
@@ -29,7 +30,7 @@ namespace Acai.Infra.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Descricao = table.Column<string>(maxLength: 100, nullable: false),
-                    TempoPreparoAdicional = table.Column<double>(nullable: true)
+                    TempoPreparoAdicional = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,19 +127,34 @@ namespace Acai.Infra.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Sabor",
-                columns: new[] { "Id", "Descricao", "TempoPreparoAdicional" },
-                values: new object[] { 1, "Morango", null });
+                table: "Personalizacao",
+                columns: new[] { "Id", "Descricao", "TempoPreparoAdicional", "ValorAdicional" },
+                values: new object[,]
+                {
+                    { 1, "Leite ninho", 0.0, 3m },
+                    { 2, "Granola", 0.0, 0m },
+                    { 3, "Paçoca", 3.0, 3m }
+                });
 
             migrationBuilder.InsertData(
                 table: "Sabor",
                 columns: new[] { "Id", "Descricao", "TempoPreparoAdicional" },
-                values: new object[] { 2, "Banana", null });
+                values: new object[,]
+                {
+                    { 1, "Morango", 0.0 },
+                    { 2, "Banana", 0.0 },
+                    { 3, "Kiwi", 5.0 }
+                });
 
             migrationBuilder.InsertData(
-                table: "Sabor",
-                columns: new[] { "Id", "Descricao", "TempoPreparoAdicional" },
-                values: new object[] { 3, "Kiwi", 5.0 });
+                table: "Tamanho",
+                columns: new[] { "Id", "Descricao", "TempoPreparo", "Valor" },
+                values: new object[,]
+                {
+                    { 1, "Pequeno", 5.0, 10m },
+                    { 2, "Médio", 7.0, 13m },
+                    { 3, "Grande", 10.0, 15m }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pedido_ProdutoId",

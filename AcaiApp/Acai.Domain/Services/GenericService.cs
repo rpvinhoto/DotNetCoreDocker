@@ -15,13 +15,13 @@ namespace Acai.Domain.Services
             _uow = uow;
         }
 
-        public void Add(T entity)
+        public virtual void Add(T entity)
         {
             _repository.Add(entity);
             _uow.Commit();
         }
 
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             _repository.Delete(entity);
             _uow.Commit();
@@ -32,19 +32,20 @@ namespace Acai.Domain.Services
             _repository.Dispose();
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return _repository.GetAll();
         }
 
-        public T GetById(int id)
+        public virtual T GetById(int id)
         {
             return _repository.GetById(id);
         }
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
             _repository.Update(entity);
+            _uow.Commit();
         }
     }
 }

@@ -4,9 +4,9 @@ using Acai.Infra.Context;
 
 namespace Acai.Infra.Repositories
 {
-    public class SaborRepository : GenericRepository<Sabor>, ISaborRepository
+    public class ProdutoRepository : GenericRepository<Produto>, IProdutoRepository
     {
-        public SaborRepository(AcaiContext dbContext) : base(dbContext)
+        public ProdutoRepository(AcaiContext dbContext) : base(dbContext)
         {
         }
     }

@@ -1,7 +1,5 @@
-﻿using Acai.Domain.Entities;
-using Acai.Domain.Interfaces.Repositories;
+﻿using Acai.Domain.Interfaces.Repositories;
 using Acai.Infra.Context;
-using System.Threading.Tasks;
 
 namespace Acai.Infra.Repositories
 {
@@ -9,17 +7,28 @@ namespace Acai.Infra.Repositories
     {
         private readonly AcaiContext _dbContext;
 
-        public IRepository<Sabor> SaborRepository { get; }
+        private IPedidoRepository _pedidoRepository;
+        private IPersonalizacaoRepository _personalizacaoRepository;
+        private IProdutoRepository _produtoRepository;
+        private IProdutoPersonalizacaoRepository _produtoPersonalizacaoRepository;
+        private ISaborRepository _saborRepository;
+        private ITamanhoRepository _tamanhoRepository;
 
         public UnitOfWork(AcaiContext dbContext)
         {
             _dbContext = dbContext;
-            SaborRepository = new SaborRepository(_dbContext);
         }
 
-        public async Task Commit()
+        public IPedidoRepository PedidoRepository => _pedidoRepository = _pedidoRepository ?? new PedidoRepository(_dbContext);
+        public IPersonalizacaoRepository PersonalizacaoRepository => _personalizacaoRepository = _personalizacaoRepository ?? new PersonalizacaoRepository(_dbContext);
+        public IProdutoRepository ProdutoRepository => _produtoRepository = _produtoRepository ?? new ProdutoRepository(_dbContext);
+        public IProdutoPersonalizacaoRepository ProdutoPersonalizacaoRepository => _produtoPersonalizacaoRepository = _produtoPersonalizacaoRepository ?? new ProdutoPersonalizacaoRepository(_dbContext);
+        public ISaborRepository SaborRepository => _saborRepository = _saborRepository ?? new SaborRepository(_dbContext);
+        public ITamanhoRepository TamanhoRepository => _tamanhoRepository = _tamanhoRepository ?? new TamanhoRepository(_dbContext);
+
+        public void Commit()
         {
-            await _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
 
         public void Dispose()

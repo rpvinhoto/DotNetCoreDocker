@@ -1,9 +1,6 @@
 ﻿using Acai.Domain.Entities;
 using Acai.Infra.Context.Configs;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Acai.Infra.Context
 {

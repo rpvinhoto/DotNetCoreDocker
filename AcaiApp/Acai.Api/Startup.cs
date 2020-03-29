@@ -1,4 +1,5 @@
-﻿using Acai.Application.AppServices;
+﻿using Acai.Api.Mapper;
+using Acai.Application.AppServices;
 using Acai.Application.Interfaces;
 using Acai.Domain.Interfaces.Repositories;
 using Acai.Domain.Interfaces.Services;
@@ -36,9 +37,13 @@ namespace Acai.Api
             services.AddScoped(typeof(IGenericAppService<>), typeof(GenericAppService<>));
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 
-            services.AddTransient<ISaborAppService, SaborAppService>();
-            services.AddTransient<ISaborService, SaborService>();
-            services.AddTransient<ISaborRepository, SaborRepository>();
+            services.AddScoped<ISaborAppService, SaborAppService>();
+            services.AddScoped<ISaborService, SaborService>();
+            services.AddScoped<ISaborRepository, SaborRepository>();
+
+            var mapperConfig = MapperConfig.Configure();
+            var mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

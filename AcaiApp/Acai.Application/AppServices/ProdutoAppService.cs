@@ -4,9 +4,9 @@ using Acai.Domain.Interfaces.Services;
 
 namespace Acai.Application.AppServices
 {
-    public class SaborAppService : GenericAppService<Sabor>, ISaborAppService
+    public class ProdutoAppService : GenericAppService<Produto>, IProdutoAppService
     {
-        public SaborAppService(ISaborService saborService) : base(saborService)
+        public ProdutoAppService(IProdutoService produtoService) : base(produtoService)
         {
         }
     }

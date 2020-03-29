@@ -19,6 +19,11 @@ namespace Acai.Infra.Context.Configs
                 .UseSqlServerIdentityColumn();
 
             modelBuilder.Entity<Personalizacao>()
+                .Property(p => p.Descricao)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<Personalizacao>()
                 .Property(p => p.TempoPreparoAdicional)
                 .IsRequired();
 
