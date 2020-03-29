@@ -17,9 +17,11 @@ namespace Acai.Infra.Repositories
             _dbSet = dbContext.Set<T>();
         }
 
-        public virtual void Add(T entity)
+        public virtual T Add(T entity)
         {
             _dbSet.Add(entity);
+
+            return entity;
         }
 
         public virtual void Delete(T entity)

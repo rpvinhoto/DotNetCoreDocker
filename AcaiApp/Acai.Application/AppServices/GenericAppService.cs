@@ -13,9 +13,9 @@ namespace Acai.Application.AppServices
             _genericService = genericService;
         }
 
-        public void Add(T entity)
+        public T Add(T entity)
         {
-            _genericService.Add(entity);
+            return _genericService.Add(entity);
         }
 
         public void Delete(T entity)

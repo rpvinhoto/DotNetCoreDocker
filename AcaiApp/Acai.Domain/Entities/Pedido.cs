@@ -9,18 +9,12 @@ namespace Acai.Domain.Entities
         public int Id { get; set; }
         public int TamanhoId { get; set; }
         public int SaborId { get; set; }
-        public DateTime DataHora { get; private set; }
         public decimal ValorTotal { get; private set; }
         public double TempoPreparoTotal { get; private set; }
 
         public Tamanho Tamanho { get; set; }
         public Sabor Sabor { get; set; }
         public IEnumerable<PedidoPersonalizacao> Personalizacoes { get; set; }
-
-        public Pedido()
-        {
-            DataHora = DateTime.Now;
-        }
 
         public void CalcularValorTotal()
         {

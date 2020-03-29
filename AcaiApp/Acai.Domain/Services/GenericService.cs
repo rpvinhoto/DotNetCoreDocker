@@ -15,10 +15,12 @@ namespace Acai.Domain.Services
             _uow = uow;
         }
 
-        public virtual void Add(T entity)
+        public virtual T Add(T entity)
         {
-            _repository.Add(entity);
+            var createdEntity = _repository.Add(entity);
             _uow.Commit();
+
+            return createdEntity;
         }
 
         public virtual void Delete(T entity)

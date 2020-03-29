@@ -5,7 +5,7 @@ namespace Acai.Application.Interfaces
 {
     public interface IGenericAppService<T> : IDisposable where T : class
     {
-        void Add(T entity);
+        T Add(T entity);
         void Delete(T entity);
         IEnumerable<T> GetAll();
         T GetById(int id);

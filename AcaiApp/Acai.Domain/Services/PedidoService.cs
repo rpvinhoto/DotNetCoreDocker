@@ -15,20 +15,70 @@ namespace Acai.Domain.Services
             _uow = uow;
         }
 
-        public override void Add(Pedido entity)
+        public override Pedido Add(Pedido entity)
         {
-            entity.Tamanho = _uow.TamanhoRepository.GetById(entity.TamanhoId);
-            entity.Sabor = _uow.SaborRepository.GetById(entity.SaborId);
-            entity.Personalizacoes.ToList().ForEach(p => p.Personalizacao = _uow.PersonalizacaoRepository.GetById(p.PersonalizacaoId));
+            var pedido = LoadEntity(entity);
 
-            entity.CalcularTempoPreparoTotal();
-            entity.CalcularValorTotal();
+            pedido.Tamanho = null;
+            pedido.Sabor = null;
+            pedido.Personalizacoes.ToList().ForEach(p => p.Personalizacao = null);
 
-            entity.Tamanho = null;
-            entity.Sabor = null;
-            entity.Personalizacoes.ToList().ForEach(p => p.Personalizacao = null);
+            return GetById(base.Add(pedido).Id);
+        }
 
-            base.Add(entity);
+        public override IEnumerable<Pedido> GetAll()
+        {
+            var todosPedidos = base.GetAll().ToList();
+            var pedidos = new List<Pedido>();
+
+            foreach (var pedido in todosPedidos)
+                pedidos.Add(LoadEntity(pedido));
+
+            return pedidos;
+        }
+
+        public override Pedido GetById(int id)
+        {
+            return LoadEntity(base.GetById(id));
+        }
+
+        private Pedido LoadEntity(Pedido entity)
+        {
+            if (entity == null)
+                return null;
+
+            var pedido = new Pedido
+            {
+                Id = entity.Id,
+                TamanhoId = entity.TamanhoId,
+                Tamanho = _uow.TamanhoRepository.GetById(entity.TamanhoId),
+                SaborId = entity.SaborId,
+                Sabor = _uow.SaborRepository.GetById(entity.SaborId),
+                Personalizacoes = LoadEntity(entity.Personalizacoes)
+            };
+
+            pedido.CalcularTempoPreparoTotal();
+            pedido.CalcularValorTotal();
+
+            return pedido;
+        }
+
+        private IEnumerable<PedidoPersonalizacao> LoadEntity(IEnumerable<PedidoPersonalizacao> pedidoPersonalizacoes)
+        {
+            var personalizacoes = new List<PedidoPersonalizacao>();
+
+            foreach (var pedidoPersonalizacao in pedidoPersonalizacoes)
+            {
+                personalizacoes.Add(new PedidoPersonalizacao
+                {
+                    Id = pedidoPersonalizacao.Id,
+                    PedidoId = pedidoPersonalizacao.PedidoId,
+                    PersonalizacaoId = pedidoPersonalizacao.PersonalizacaoId,
+                    Personalizacao = _uow.PersonalizacaoRepository.GetById(pedidoPersonalizacao.PersonalizacaoId)
+                });
+            }
+
+            return personalizacoes;
         }
     }
 }

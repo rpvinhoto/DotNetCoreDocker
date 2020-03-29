@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Acai.Api.Controllers
 {
@@ -25,29 +26,53 @@ namespace Acai.Api.Controllers
         [HttpGet]
         public IEnumerable<DetalhesPedidoViewModel> Get()
         {
-            return _mapper.Map<IEnumerable<DetalhesPedidoViewModel>>(_pedidoAppService.GetAll());
+            var pedidos = _pedidoAppService.GetAll();
+
+            if (pedidos == null || !pedidos.Any())
+            {
+                Response.StatusCode = StatusCodes.Status204NoContent;
+                return null;
+            }
+
+            var detalhesPedidos = new List<DetalhesPedidoViewModel>();
+
+            foreach (var pedido in pedidos)
+            {
+                var detalhesPedido = new DetalhesPedidoViewModel(pedido);
+                detalhesPedidos.Add(detalhesPedido);
+            }
+
+            return detalhesPedidos;
         }
 
         // GET: api/Pedidos/5
         [HttpGet("{id}", Name = "PedidoGetById")]
         public DetalhesPedidoViewModel Get(int id)
         {
-            return _mapper.Map<DetalhesPedidoViewModel>(_pedidoAppService.GetById(id));
+            var pedido = _pedidoAppService.GetById(id);
+
+            if (pedido == null)
+            {
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return null;
+            }
+
+            return new DetalhesPedidoViewModel(pedido);
         }
 
         // POST: api/Pedidos
         [HttpPost]
-        public void Post([FromBody] PedidoViewModel entity)
+        public DetalhesPedidoViewModel Post([FromBody] PedidoViewModel entity)
         {
             if (entity == null)
             {
                 Response.StatusCode = StatusCodes.Status400BadRequest;
-                return;
+                return null;
             }
 
-            _pedidoAppService.Add(_mapper.Map<Pedido>(entity));
-
+            var pedido = _pedidoAppService.Add(_mapper.Map<Pedido>(entity));
             Response.StatusCode = StatusCodes.Status201Created;
+            return new DetalhesPedidoViewModel(pedido);
         }
 
         // DELETE: api/Pedidos/5
@@ -63,7 +88,6 @@ namespace Acai.Api.Controllers
             }
 
             _pedidoAppService.Delete(pedido);
-
             Response.StatusCode = StatusCodes.Status204NoContent;
         }
     }

@@ -31,5 +31,3 @@ namespace Acai.Api.Mapper
         }
     }
 }
-
-//.ForMember(dest => dest.TamanhoId, m => m.MapFrom(src => src.Tamanho))

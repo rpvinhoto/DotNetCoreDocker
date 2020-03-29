@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Acai.Infra.Migrations
@@ -60,7 +59,6 @@ namespace Acai.Infra.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     TamanhoId = table.Column<int>(nullable: false),
                     SaborId = table.Column<int>(nullable: false),
-                    DataHora = table.Column<DateTime>(type: "datetime", nullable: false),
                     ValorTotal = table.Column<decimal>(nullable: false),
                     TempoPreparoTotal = table.Column<double>(nullable: false)
                 },

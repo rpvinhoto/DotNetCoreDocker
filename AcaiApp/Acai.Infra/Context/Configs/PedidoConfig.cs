@@ -19,11 +19,6 @@ namespace Acai.Infra.Context.Configs
                 .UseSqlServerIdentityColumn();
 
             modelBuilder.Entity<Pedido>()
-                .Property(p => p.DataHora)
-                .IsRequired()
-                .HasColumnType("datetime");
-
-            modelBuilder.Entity<Pedido>()
                 .Property(p => p.ValorTotal)
                 .IsRequired();
 

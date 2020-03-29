@@ -5,7 +5,7 @@ namespace Acai.Domain.Interfaces.Repositories
 {
     public interface IRepository<T> : IDisposable where T : class
     {
-        void Add(T entity);
+        T Add(T entity);
         void Delete(T entity);
         IEnumerable<T> GetAll();
         T GetById(int id);
