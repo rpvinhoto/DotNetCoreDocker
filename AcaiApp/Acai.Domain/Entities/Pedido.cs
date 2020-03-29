@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Acai.Domain.Entities
@@ -18,15 +17,22 @@ namespace Acai.Domain.Entities
 
         public void CalcularValorTotal()
         {
-            ValorTotal = Tamanho.Valor 
-                + Personalizacoes.Sum(p => p.Personalizacao.ValorAdicional);
+            var valorTamanho = Tamanho?.Valor;
+            var valorPersonalizacoes = Personalizacoes?.Sum(p => p.Personalizacao?.ValorAdicional);
+
+            ValorTotal = (valorTamanho ?? 0)
+                + (valorPersonalizacoes ?? 0);
         }
 
         public void CalcularTempoPreparoTotal()
         {
-            TempoPreparoTotal = Tamanho.TempoPreparo 
-                + Sabor.TempoPreparoAdicional 
-                + Personalizacoes.Sum(p => p.Personalizacao.TempoPreparoAdicional);
+            var tempoTamanho = Tamanho?.TempoPreparo;
+            var tempoSabor = Sabor?.TempoPreparoAdicional;
+            var tempoPersonalizacoes = Personalizacoes?.Sum(p => p.Personalizacao?.TempoPreparoAdicional);
+
+            TempoPreparoTotal = (tempoTamanho ?? 0)
+                + (tempoSabor ?? 0)
+                + (tempoPersonalizacoes ?? 0);
         }
     }
 }

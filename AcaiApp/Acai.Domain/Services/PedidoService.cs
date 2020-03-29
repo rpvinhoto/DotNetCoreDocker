@@ -1,6 +1,7 @@
 ﻿using Acai.Domain.Entities;
 using Acai.Domain.Interfaces.Repositories;
 using Acai.Domain.Interfaces.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -47,13 +48,23 @@ namespace Acai.Domain.Services
             if (entity == null)
                 return null;
 
+            var tamanho = _uow.TamanhoRepository.GetById(entity.TamanhoId);
+
+            if (tamanho == null)
+                throw new InvalidOperationException("Tamanho não encontrado.");
+
+            var sabor = _uow.SaborRepository.GetById(entity.SaborId);
+
+            if (sabor == null)
+                throw new InvalidOperationException("Sabor não encontrado.");
+
             var pedido = new Pedido
             {
                 Id = entity.Id,
                 TamanhoId = entity.TamanhoId,
-                Tamanho = _uow.TamanhoRepository.GetById(entity.TamanhoId),
+                Tamanho = tamanho,
                 SaborId = entity.SaborId,
-                Sabor = _uow.SaborRepository.GetById(entity.SaborId),
+                Sabor = sabor,
                 Personalizacoes = LoadEntity(entity.Personalizacoes)
             };
 
@@ -69,12 +80,17 @@ namespace Acai.Domain.Services
 
             foreach (var pedidoPersonalizacao in pedidoPersonalizacoes)
             {
+                var personalizacao = _uow.PersonalizacaoRepository.GetById(pedidoPersonalizacao.PersonalizacaoId);
+
+                if (personalizacao == null)
+                    throw new InvalidOperationException("Personalização não encontrada.");
+
                 personalizacoes.Add(new PedidoPersonalizacao
                 {
                     Id = pedidoPersonalizacao.Id,
                     PedidoId = pedidoPersonalizacao.PedidoId,
                     PersonalizacaoId = pedidoPersonalizacao.PersonalizacaoId,
-                    Personalizacao = _uow.PersonalizacaoRepository.GetById(pedidoPersonalizacao.PersonalizacaoId)
+                    Personalizacao = personalizacao
                 });
             }
 

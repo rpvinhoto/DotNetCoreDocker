@@ -7,6 +7,13 @@ namespace Acai.Infra.Context
     {
         public void Run(ModelBuilder modelBuilder)
         {
+            SaborSeed(modelBuilder);
+            TamanhoSeed(modelBuilder);
+            PersonalizacaoSeed(modelBuilder);
+        }
+
+        private static void SaborSeed(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Sabor>()
                 .HasData(new Sabor[]
                 {
@@ -27,7 +34,10 @@ namespace Acai.Infra.Context
                         TempoPreparoAdicional = 5
                     }
                 });
+        }
 
+        private static void TamanhoSeed(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Tamanho>()
                 .HasData(new Tamanho[]
                 {
@@ -52,8 +62,11 @@ namespace Acai.Infra.Context
                         TempoPreparo = 10,
                         Valor = 15
                     }
-                });
+               });
+        }
 
+        private static void PersonalizacaoSeed(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Personalizacao>()
                 .HasData(new Personalizacao[]
                 {

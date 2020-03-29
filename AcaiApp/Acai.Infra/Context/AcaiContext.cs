@@ -8,7 +8,6 @@ namespace Acai.Infra.Context
     {
         public AcaiContext(DbContextOptions<AcaiContext> options) : base(options)
         {
-
         }
 
         public virtual DbSet<Pedido> Pedidos { get; set; }
