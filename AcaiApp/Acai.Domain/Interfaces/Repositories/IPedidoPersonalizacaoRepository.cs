@@ -2,7 +2,7 @@
 
 namespace Acai.Domain.Interfaces.Repositories
 {
-    public interface IProdutoRepository : IRepository<Produto>
+    public interface IPedidoPersonalizacaoRepository : IRepository<PedidoPersonalizacao>
     {
     }
 }

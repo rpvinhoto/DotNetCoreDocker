@@ -11,34 +11,34 @@ namespace Acai.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SaboresController : ControllerBase
+    public class PersonalizacoesController : ControllerBase
     {
-        private readonly ISaborAppService _saborAppService;
+        private readonly IPersonalizacaoAppService _personalizacaoAppService;
         private readonly IMapper _mapper;
 
-        public SaboresController(ISaborAppService saborAppService, IMapper mapper)
+        public PersonalizacoesController(IPersonalizacaoAppService personalizacaoAppService, IMapper mapper)
         {
-            _saborAppService = saborAppService;
+            _personalizacaoAppService = personalizacaoAppService;
             _mapper = mapper;
         }
 
-        // GET: api/Sabores
+        // GET: api/Personalizacoes
         [HttpGet]
-        public IEnumerable<SaborViewModel> Get()
+        public IEnumerable<PersonalizacaoViewModel> Get()
         {
-            return _mapper.Map<IEnumerable<SaborViewModel>>(_saborAppService.GetAll());
+            return _mapper.Map<IEnumerable<PersonalizacaoViewModel>>(_personalizacaoAppService.GetAll());
         }
 
-        // GET: api/Sabores/5
-        [HttpGet("{id}", Name = "SaborGetById")]
-        public SaborViewModel Get(int id)
+        // GET: api/Personalizacoes/5
+        [HttpGet("{id}", Name = "PersonalizacaoGetById")]
+        public PersonalizacaoViewModel Get(int id)
         {
-            return _mapper.Map<SaborViewModel>(_saborAppService.GetById(id));
+            return _mapper.Map<PersonalizacaoViewModel>(_personalizacaoAppService.GetById(id));
         }
 
-        // POST: api/Sabores
+        // POST: api/Personalizacoes
         [HttpPost]
-        public void Post([FromBody] SaborViewModel entity)
+        public void Post([FromBody] PersonalizacaoViewModel entity)
         {
             if (entity.Id != 0)
             {
@@ -46,14 +46,14 @@ namespace Acai.Api.Controllers
                 throw new InvalidOperationException("Id não deve ser informado.");
             }
 
-            _saborAppService.Add(_mapper.Map<Sabor>(entity));
+            _personalizacaoAppService.Add(_mapper.Map<Personalizacao>(entity));
 
             Response.StatusCode = StatusCodes.Status201Created;
         }
 
-        // PUT: api/Sabores/5
+        // PUT: api/Personalizacoes/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] SaborViewModel entity)
+        public void Put(int id, [FromBody] PersonalizacaoViewModel entity)
         {
             if (entity == null)
             {
@@ -67,32 +67,32 @@ namespace Acai.Api.Controllers
                 return;
             }
 
-            var sabor = _saborAppService.GetById(id);
+            var personalizacao = _personalizacaoAppService.GetById(id);
 
-            if (sabor == null)
+            if (personalizacao == null)
             {
                 Response.StatusCode = StatusCodes.Status404NotFound;
                 return;
             }
 
-            _saborAppService.Update(_mapper.Map<Sabor>(entity));
+            _personalizacaoAppService.Update(_mapper.Map<Personalizacao>(entity));
 
             Response.StatusCode = StatusCodes.Status204NoContent;
         }
 
-        // DELETE: api/Sabores/5
+        // DELETE: api/Personalizacoes/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var sabor = _saborAppService.GetById(id);
+            var personalizacao = _personalizacaoAppService.GetById(id);
 
-            if (sabor == null)
+            if (personalizacao == null)
             {
                 Response.StatusCode = StatusCodes.Status404NotFound;
                 return;
             }
 
-            _saborAppService.Delete(sabor);
+            _personalizacaoAppService.Delete(personalizacao);
 
             Response.StatusCode = StatusCodes.Status204NoContent;
         }

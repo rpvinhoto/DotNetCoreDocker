@@ -9,6 +9,6 @@ namespace Acai.Domain.Entities
         public decimal Valor { get; set; }
         public double TempoPreparo { get; set; }
 
-        public IEnumerable<Produto> Produtos { get; set; }
+        public IEnumerable<Pedido> Pedidos { get; set; }
     }
 }

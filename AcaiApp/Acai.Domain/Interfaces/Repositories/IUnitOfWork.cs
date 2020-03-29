@@ -7,8 +7,7 @@ namespace Acai.Domain.Interfaces.Repositories
     {
         IPedidoRepository PedidoRepository { get; }
         IPersonalizacaoRepository PersonalizacaoRepository { get; }
-        IProdutoRepository ProdutoRepository { get; }
-        IProdutoPersonalizacaoRepository ProdutoPersonalizacaoRepository { get; }
+        IPedidoPersonalizacaoRepository PedidoPersonalizacaoRepository { get; }
         ISaborRepository SaborRepository { get; }
         ITamanhoRepository TamanhoRepository { get; }
 

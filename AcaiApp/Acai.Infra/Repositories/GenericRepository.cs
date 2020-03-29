@@ -17,12 +17,12 @@ namespace Acai.Infra.Repositories
             _dbSet = dbContext.Set<T>();
         }
 
-        public void Add(T entity)
+        public virtual void Add(T entity)
         {
             _dbSet.Add(entity);
         }
 
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             _dbSet.Remove(entity);
         }
@@ -32,20 +32,22 @@ namespace Acai.Infra.Repositories
             _dbContext.Dispose();
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return _dbSet.ToList();
         }
 
-        public T GetById(int id)
+        public virtual T GetById(int id)
         {
             var entity = _dbSet.Find(id);
-            _dbContext.Entry(entity).State = EntityState.Detached;
+
+            if (entity != null)
+                _dbContext.Entry(entity).State = EntityState.Detached;
 
             return entity;
         }
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
             _dbSet.Attach(entity);
             _dbContext.Entry(entity).State = EntityState.Modified;

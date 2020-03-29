@@ -11,34 +11,34 @@ namespace Acai.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SaboresController : ControllerBase
+    public class TamanhosController : ControllerBase
     {
-        private readonly ISaborAppService _saborAppService;
+        private readonly ITamanhoAppService _tamanhoAppService;
         private readonly IMapper _mapper;
 
-        public SaboresController(ISaborAppService saborAppService, IMapper mapper)
+        public TamanhosController(ITamanhoAppService tamanhoAppService, IMapper mapper)
         {
-            _saborAppService = saborAppService;
+            _tamanhoAppService = tamanhoAppService;
             _mapper = mapper;
         }
 
-        // GET: api/Sabores
+        // GET: api/Tamanhos
         [HttpGet]
-        public IEnumerable<SaborViewModel> Get()
+        public IEnumerable<TamanhoViewModel> Get()
         {
-            return _mapper.Map<IEnumerable<SaborViewModel>>(_saborAppService.GetAll());
+            return _mapper.Map<IEnumerable<TamanhoViewModel>>(_tamanhoAppService.GetAll());
         }
 
-        // GET: api/Sabores/5
-        [HttpGet("{id}", Name = "SaborGetById")]
-        public SaborViewModel Get(int id)
+        // GET: api/Tamanhos/5
+        [HttpGet("{id}", Name = "TamanhoGetById")]
+        public TamanhoViewModel Get(int id)
         {
-            return _mapper.Map<SaborViewModel>(_saborAppService.GetById(id));
+            return _mapper.Map<TamanhoViewModel>(_tamanhoAppService.GetById(id));
         }
 
-        // POST: api/Sabores
+        // POST: api/Tamanhos
         [HttpPost]
-        public void Post([FromBody] SaborViewModel entity)
+        public void Post([FromBody] TamanhoViewModel entity)
         {
             if (entity.Id != 0)
             {
@@ -46,14 +46,14 @@ namespace Acai.Api.Controllers
                 throw new InvalidOperationException("Id não deve ser informado.");
             }
 
-            _saborAppService.Add(_mapper.Map<Sabor>(entity));
+            _tamanhoAppService.Add(_mapper.Map<Tamanho>(entity));
 
             Response.StatusCode = StatusCodes.Status201Created;
         }
 
-        // PUT: api/Sabores/5
+        // PUT: api/Tamanhos/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] SaborViewModel entity)
+        public void Put(int id, [FromBody] TamanhoViewModel entity)
         {
             if (entity == null)
             {
@@ -67,32 +67,32 @@ namespace Acai.Api.Controllers
                 return;
             }
 
-            var sabor = _saborAppService.GetById(id);
+            var tamanho = _tamanhoAppService.GetById(id);
 
-            if (sabor == null)
+            if (tamanho == null)
             {
                 Response.StatusCode = StatusCodes.Status404NotFound;
                 return;
             }
 
-            _saborAppService.Update(_mapper.Map<Sabor>(entity));
+            _tamanhoAppService.Update(_mapper.Map<Tamanho>(entity));
 
             Response.StatusCode = StatusCodes.Status204NoContent;
         }
 
-        // DELETE: api/Sabores/5
+        // DELETE: api/Tamanhos/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var sabor = _saborAppService.GetById(id);
+            var tamanho = _tamanhoAppService.GetById(id);
 
-            if (sabor == null)
+            if (tamanho == null)
             {
                 Response.StatusCode = StatusCodes.Status404NotFound;
                 return;
             }
 
-            _saborAppService.Delete(sabor);
+            _tamanhoAppService.Delete(tamanho);
 
             Response.StatusCode = StatusCodes.Status204NoContent;
         }

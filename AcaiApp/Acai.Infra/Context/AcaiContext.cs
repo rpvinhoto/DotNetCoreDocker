@@ -12,16 +12,16 @@ namespace Acai.Infra.Context
         }
 
         public virtual DbSet<Pedido> Pedidos { get; set; }
+        public virtual DbSet<PedidoPersonalizacao> PedidoPersonalizacoes { get; set; }
         public virtual DbSet<Personalizacao> Personalizacoes { get; set; }
-        public virtual DbSet<Produto> Produtos { get; set; }
         public virtual DbSet<Sabor> Sabores { get; set; }
         public virtual DbSet<Tamanho> Tamanhos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             new PedidoConfig().Run(modelBuilder);
+            new PedidoPersonalizacaoConfig().Run(modelBuilder);
             new PersonalizacaoConfig().Run(modelBuilder);
-            new ProdutoConfig().Run(modelBuilder);
             new SaborConfig().Run(modelBuilder);
             new TamanhoConfig().Run(modelBuilder);
 

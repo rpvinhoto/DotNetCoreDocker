@@ -11,7 +11,7 @@ namespace Acai.Api.ViewModel
         public string Descricao { get; set; }
 
         [Required(ErrorMessage = "Valor é um campo obrigatório.")]
-        [Range(0, 999, ErrorMessage = "Valor deve estar entre 0 e 999999999.")]
+        [Range(0, 999999999, ErrorMessage = "Valor deve estar entre 0 e 999999999.")]
         public decimal Valor { get; set; }
 
         [Required(ErrorMessage = "TempoPreparo é um campo obrigatório.")]

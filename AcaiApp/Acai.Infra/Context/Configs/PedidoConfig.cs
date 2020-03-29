@@ -32,8 +32,14 @@ namespace Acai.Infra.Context.Configs
                 .IsRequired();
 
             modelBuilder.Entity<Pedido>()
-                .HasOne(p => p.Produto)
-                .WithMany(pe => pe.Pedidos)
+                .HasOne(p => p.Tamanho)
+                .WithMany(t => t.Pedidos)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Pedido>()
+                .HasOne(p => p.Sabor)
+                .WithMany(s => s.Pedidos)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
         }

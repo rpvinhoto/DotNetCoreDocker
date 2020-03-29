@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Acai.Infra.Migrations
 {
     [DbContext(typeof(AcaiContext))]
-    [Migration("20200329044738_Inicial")]
+    [Migration("20200329055247_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,9 @@ namespace Acai.Infra.Migrations
                     b.Property<DateTime>("DataHora")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("ProdutoId");
+                    b.Property<int>("SaborId");
+
+                    b.Property<int>("TamanhoId");
 
                     b.Property<double>("TempoPreparoTotal");
 
@@ -38,9 +40,30 @@ namespace Acai.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProdutoId");
+                    b.HasIndex("SaborId");
+
+                    b.HasIndex("TamanhoId");
 
                     b.ToTable("Pedido");
+                });
+
+            modelBuilder.Entity("Acai.Domain.Entities.PedidoPersonalizacao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PedidoId");
+
+                    b.Property<int>("PersonalizacaoId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PedidoId");
+
+                    b.HasIndex("PersonalizacaoId");
+
+                    b.ToTable("PedidoPersonalizacao");
                 });
 
             modelBuilder.Entity("Acai.Domain.Entities.Personalizacao", b =>
@@ -66,44 +89,6 @@ namespace Acai.Infra.Migrations
                         new { Id = 2, Descricao = "Granola", TempoPreparoAdicional = 0.0, ValorAdicional = 0m },
                         new { Id = 3, Descricao = "Paçoca", TempoPreparoAdicional = 3.0, ValorAdicional = 3m }
                     );
-                });
-
-            modelBuilder.Entity("Acai.Domain.Entities.Produto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("SaborId");
-
-                    b.Property<int>("TamanhoId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SaborId");
-
-                    b.HasIndex("TamanhoId");
-
-                    b.ToTable("Produto");
-                });
-
-            modelBuilder.Entity("Acai.Domain.Entities.ProdutoPersonalizacao", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("PersonalizacaoId");
-
-                    b.Property<int>("ProdutoId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonalizacaoId");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.ToTable("ProdutoPersonalizacao");
                 });
 
             modelBuilder.Entity("Acai.Domain.Entities.Sabor", b =>
@@ -156,36 +141,28 @@ namespace Acai.Infra.Migrations
 
             modelBuilder.Entity("Acai.Domain.Entities.Pedido", b =>
                 {
-                    b.HasOne("Acai.Domain.Entities.Produto", "Produto")
-                        .WithMany("Pedidos")
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("Acai.Domain.Entities.Produto", b =>
-                {
                     b.HasOne("Acai.Domain.Entities.Sabor", "Sabor")
-                        .WithMany("Produtos")
+                        .WithMany("Pedidos")
                         .HasForeignKey("SaborId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Acai.Domain.Entities.Tamanho", "Tamanho")
-                        .WithMany("Produtos")
+                        .WithMany("Pedidos")
                         .HasForeignKey("TamanhoId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Acai.Domain.Entities.ProdutoPersonalizacao", b =>
+            modelBuilder.Entity("Acai.Domain.Entities.PedidoPersonalizacao", b =>
                 {
-                    b.HasOne("Acai.Domain.Entities.Personalizacao", "Personalizacao")
-                        .WithMany("ProdutoPersonalizacoes")
-                        .HasForeignKey("PersonalizacaoId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("Acai.Domain.Entities.Pedido", "Pedido")
+                        .WithMany("PedidoPersonalizacoes")
+                        .HasForeignKey("PedidoId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Acai.Domain.Entities.Produto", "Produto")
-                        .WithMany("ProdutoPersonalizacoes")
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("Acai.Domain.Entities.Personalizacao", "Personalizacao")
+                        .WithMany("PedidoPersonalizacoes")
+                        .HasForeignKey("PersonalizacaoId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }
