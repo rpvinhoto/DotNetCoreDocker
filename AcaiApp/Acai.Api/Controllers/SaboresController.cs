@@ -2,10 +2,9 @@
 using Acai.Application.Interfaces;
 using Acai.Domain.Entities;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Acai.Api.Controllers
 {
@@ -24,77 +23,75 @@ namespace Acai.Api.Controllers
 
         // GET: api/Sabores
         [HttpGet]
-        public IEnumerable<SaborViewModel> Get()
+        public ActionResult Get()
         {
-            return _mapper.Map<IEnumerable<SaborViewModel>>(_saborAppService.GetAll());
+            var sabores = _saborAppService.GetAll();
+
+            if (sabores == null || !sabores.Any())
+                return NoContent();
+
+            return Ok(_mapper.Map<IEnumerable<SaborViewModel>>(sabores));
         }
 
         // GET: api/Sabores/5
         [HttpGet("{id}", Name = "SaborGetById")]
-        public SaborViewModel Get(int id)
+        public ActionResult Get(int id)
         {
-            return _mapper.Map<SaborViewModel>(_saborAppService.GetById(id));
+            var sabor = _saborAppService.GetById(id);
+
+            if (sabor == null)
+                return NotFound();
+
+            return Ok(_mapper.Map<SaborViewModel>(sabor));
         }
 
         // POST: api/Sabores
         [HttpPost]
-        public void Post([FromBody] SaborViewModel entity)
+        public ActionResult Post([FromBody] SaborViewModel entity)
         {
+            if (entity == null)
+                return BadRequest();
+
             if (entity.Id != 0)
-            {
-                Response.StatusCode = StatusCodes.Status400BadRequest;
-                throw new InvalidOperationException("Id não deve ser informado.");
-            }
+                return BadRequest("Id não deve ser informado.");
 
-            _saborAppService.Add(_mapper.Map<Sabor>(entity));
+            var sabor = _saborAppService.Add(_mapper.Map<Sabor>(entity));
 
-            Response.StatusCode = StatusCodes.Status201Created;
+            return Created(string.Empty, _mapper.Map<SaborViewModel>(sabor));
         }
 
         // PUT: api/Sabores/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] SaborViewModel entity)
+        public ActionResult Put(int id, [FromBody] SaborViewModel entity)
         {
             if (entity == null)
-            {
-                Response.StatusCode = StatusCodes.Status400BadRequest;
-                return;
-            }
+                return BadRequest();
 
             if (id != entity.Id)
-            {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return;
-            }
+                return NotFound();
 
             var sabor = _saborAppService.GetById(id);
 
             if (sabor == null)
-            {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return;
-            }
+                return NotFound();
 
             _saborAppService.Update(_mapper.Map<Sabor>(entity));
 
-            Response.StatusCode = StatusCodes.Status204NoContent;
+            return NoContent();
         }
 
         // DELETE: api/Sabores/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
             var sabor = _saborAppService.GetById(id);
 
             if (sabor == null)
-            {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return;
-            }
+                return NotFound();
 
             _saborAppService.Delete(sabor);
 
-            Response.StatusCode = StatusCodes.Status204NoContent;
+            return NoContent();
         }
     }
 }

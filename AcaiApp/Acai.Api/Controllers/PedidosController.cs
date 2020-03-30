@@ -4,6 +4,7 @@ using Acai.Domain.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,15 +25,12 @@ namespace Acai.Api.Controllers
 
         // GET: api/Pedidos
         [HttpGet]
-        public IEnumerable<DetalhesPedidoViewModel> Get()
+        public ActionResult Get()
         {
             var pedidos = _pedidoAppService.GetAll();
 
             if (pedidos == null || !pedidos.Any())
-            {
-                Response.StatusCode = StatusCodes.Status204NoContent;
-                return null;
-            }
+                return NoContent();
 
             var detalhesPedidos = new List<DetalhesPedidoViewModel>();
 
@@ -42,53 +40,45 @@ namespace Acai.Api.Controllers
                 detalhesPedidos.Add(detalhesPedido);
             }
 
-            return detalhesPedidos;
+            return Ok(detalhesPedidos);
         }
 
         // GET: api/Pedidos/5
         [HttpGet("{id}", Name = "PedidoGetById")]
-        public DetalhesPedidoViewModel Get(int id)
+        public ActionResult Get(int id)
         {
             var pedido = _pedidoAppService.GetById(id);
 
             if (pedido == null)
-            {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return null;
-            }
+                return NotFound();
 
-            return new DetalhesPedidoViewModel(pedido);
+            var detalhesPedido = new DetalhesPedidoViewModel(pedido);
+
+            return Ok(detalhesPedido);
         }
 
         // POST: api/Pedidos
         [HttpPost]
-        public DetalhesPedidoViewModel Post([FromBody] PedidoViewModel entity)
+        public ActionResult Post([FromBody] PedidoViewModel entity)
         {
-            if (entity == null)
+            try
             {
-                Response.StatusCode = StatusCodes.Status400BadRequest;
-                return null;
+                if (entity == null)
+                    return BadRequest();
+
+                var pedido = _pedidoAppService.Add(_mapper.Map<Pedido>(entity));
+                var detalhesPedido = new DetalhesPedidoViewModel(pedido);
+
+                return Created(string.Empty, detalhesPedido);
             }
-
-            var pedido = _pedidoAppService.Add(_mapper.Map<Pedido>(entity));
-            Response.StatusCode = StatusCodes.Status201Created;
-            return new DetalhesPedidoViewModel(pedido);
-        }
-
-        // DELETE: api/Pedidos/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-            var pedido = _pedidoAppService.GetById(id);
-
-            if (pedido == null)
+            catch (InvalidOperationException e)
             {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return;
+                return NotFound(e.Message);
             }
-
-            _pedidoAppService.Delete(pedido);
-            Response.StatusCode = StatusCodes.Status204NoContent;
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

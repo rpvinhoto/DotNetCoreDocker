@@ -2,10 +2,9 @@
 using Acai.Application.Interfaces;
 using Acai.Domain.Entities;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Acai.Api.Controllers
 {
@@ -24,77 +23,75 @@ namespace Acai.Api.Controllers
 
         // GET: api/Personalizacoes
         [HttpGet]
-        public IEnumerable<PersonalizacaoViewModel> Get()
+        public ActionResult Get()
         {
-            return _mapper.Map<IEnumerable<PersonalizacaoViewModel>>(_personalizacaoAppService.GetAll());
+            var personalizacoes = _personalizacaoAppService.GetAll();
+
+            if (personalizacoes == null || !personalizacoes.Any())
+                return NoContent();
+
+            return Ok(_mapper.Map<IEnumerable<PersonalizacaoViewModel>>(personalizacoes));
         }
 
         // GET: api/Personalizacoes/5
         [HttpGet("{id}", Name = "PersonalizacaoGetById")]
-        public PersonalizacaoViewModel Get(int id)
+        public ActionResult Get(int id)
         {
-            return _mapper.Map<PersonalizacaoViewModel>(_personalizacaoAppService.GetById(id));
+            var personalizacao = _personalizacaoAppService.GetById(id);
+
+            if (personalizacao == null)
+                return NotFound();
+
+            return Ok(_mapper.Map<PersonalizacaoViewModel>(personalizacao));
         }
 
         // POST: api/Personalizacoes
         [HttpPost]
-        public void Post([FromBody] PersonalizacaoViewModel entity)
+        public ActionResult Post([FromBody] PersonalizacaoViewModel entity)
         {
+            if (entity == null)
+                return BadRequest();
+
             if (entity.Id != 0)
-            {
-                Response.StatusCode = StatusCodes.Status400BadRequest;
-                throw new InvalidOperationException("Id não deve ser informado.");
-            }
+                return BadRequest("Id não deve ser informado.");
 
-            _personalizacaoAppService.Add(_mapper.Map<Personalizacao>(entity));
+            var personalizacao = _personalizacaoAppService.Add(_mapper.Map<Personalizacao>(entity));
 
-            Response.StatusCode = StatusCodes.Status201Created;
+            return Created(string.Empty, _mapper.Map<PersonalizacaoViewModel>(personalizacao));
         }
 
         // PUT: api/Personalizacoes/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] PersonalizacaoViewModel entity)
+        public ActionResult Put(int id, [FromBody] PersonalizacaoViewModel entity)
         {
             if (entity == null)
-            {
-                Response.StatusCode = StatusCodes.Status400BadRequest;
-                return;
-            }
+                return BadRequest();
 
             if (id != entity.Id)
-            {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return;
-            }
+                return NotFound();
 
             var personalizacao = _personalizacaoAppService.GetById(id);
 
             if (personalizacao == null)
-            {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return;
-            }
+                return NotFound();
 
             _personalizacaoAppService.Update(_mapper.Map<Personalizacao>(entity));
 
-            Response.StatusCode = StatusCodes.Status204NoContent;
+            return NoContent();
         }
 
         // DELETE: api/Personalizacoes/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
             var personalizacao = _personalizacaoAppService.GetById(id);
 
             if (personalizacao == null)
-            {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return;
-            }
+                return NotFound();
 
             _personalizacaoAppService.Delete(personalizacao);
 
-            Response.StatusCode = StatusCodes.Status204NoContent;
+            return NoContent();
         }
     }
 }

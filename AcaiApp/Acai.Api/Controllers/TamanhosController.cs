@@ -2,10 +2,9 @@
 using Acai.Application.Interfaces;
 using Acai.Domain.Entities;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Acai.Api.Controllers
 {
@@ -24,77 +23,75 @@ namespace Acai.Api.Controllers
 
         // GET: api/Tamanhos
         [HttpGet]
-        public IEnumerable<TamanhoViewModel> Get()
+        public ActionResult Get()
         {
-            return _mapper.Map<IEnumerable<TamanhoViewModel>>(_tamanhoAppService.GetAll());
+            var tamanhos = _tamanhoAppService.GetAll();
+
+            if (tamanhos == null || !tamanhos.Any())
+                return NoContent();
+
+            return Ok(_mapper.Map<IEnumerable<TamanhoViewModel>>(tamanhos));
         }
 
         // GET: api/Tamanhos/5
         [HttpGet("{id}", Name = "TamanhoGetById")]
-        public TamanhoViewModel Get(int id)
+        public ActionResult Get(int id)
         {
-            return _mapper.Map<TamanhoViewModel>(_tamanhoAppService.GetById(id));
+            var tamanho = _tamanhoAppService.GetById(id);
+
+            if (tamanho == null)
+                return NotFound();
+
+            return Ok(_mapper.Map<TamanhoViewModel>(tamanho));
         }
 
         // POST: api/Tamanhos
         [HttpPost]
-        public void Post([FromBody] TamanhoViewModel entity)
+        public ActionResult Post([FromBody] TamanhoViewModel entity)
         {
+            if (entity == null)
+                return BadRequest();
+
             if (entity.Id != 0)
-            {
-                Response.StatusCode = StatusCodes.Status400BadRequest;
-                throw new InvalidOperationException("Id não deve ser informado.");
-            }
+                return BadRequest("Id não deve ser informado.");
 
-            _tamanhoAppService.Add(_mapper.Map<Tamanho>(entity));
+            var tamanho = _tamanhoAppService.Add(_mapper.Map<Tamanho>(entity));
 
-            Response.StatusCode = StatusCodes.Status201Created;
+            return Created(string.Empty, _mapper.Map<TamanhoViewModel>(tamanho));
         }
 
         // PUT: api/Tamanhos/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] TamanhoViewModel entity)
+        public ActionResult Put(int id, [FromBody] TamanhoViewModel entity)
         {
             if (entity == null)
-            {
-                Response.StatusCode = StatusCodes.Status400BadRequest;
-                return;
-            }
+                return BadRequest();
 
             if (id != entity.Id)
-            {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return;
-            }
+                return NotFound();
 
             var tamanho = _tamanhoAppService.GetById(id);
 
             if (tamanho == null)
-            {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return;
-            }
+                return NotFound();
 
             _tamanhoAppService.Update(_mapper.Map<Tamanho>(entity));
 
-            Response.StatusCode = StatusCodes.Status204NoContent;
+            return NoContent();
         }
 
         // DELETE: api/Tamanhos/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
             var tamanho = _tamanhoAppService.GetById(id);
 
             if (tamanho == null)
-            {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return;
-            }
+                return NotFound();
 
             _tamanhoAppService.Delete(tamanho);
 
-            Response.StatusCode = StatusCodes.Status204NoContent;
+            return NoContent();
         }
     }
 }
