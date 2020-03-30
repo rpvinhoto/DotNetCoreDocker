@@ -3,6 +3,7 @@ using Acai.Application.Interfaces;
 using Acai.Domain.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,6 +24,8 @@ namespace Acai.Api.Controllers
 
         // GET: api/Personalizacoes
         [HttpGet]
+        [SwaggerResponse(200, "Todos os registros")]
+        [SwaggerResponse(204, "Não existe registros")]
         public ActionResult Get()
         {
             var personalizacoes = _personalizacaoAppService.GetAll();
@@ -35,6 +38,8 @@ namespace Acai.Api.Controllers
 
         // GET: api/Personalizacoes/5
         [HttpGet("{id}", Name = "PersonalizacaoGetById")]
+        [SwaggerResponse(200, "Informações do registro")]
+        [SwaggerResponse(404, "Registro não encontrado")]
         public ActionResult Get(int id)
         {
             var personalizacao = _personalizacaoAppService.GetById(id);
@@ -47,6 +52,8 @@ namespace Acai.Api.Controllers
 
         // POST: api/Personalizacoes
         [HttpPost]
+        [SwaggerResponse(201, "Registro criado")]
+        [SwaggerResponse(400, "Requisição inválida")]
         public ActionResult Post([FromBody] PersonalizacaoViewModel entity)
         {
             if (entity == null)
@@ -62,6 +69,9 @@ namespace Acai.Api.Controllers
 
         // PUT: api/Personalizacoes/5
         [HttpPut("{id}")]
+        [SwaggerResponse(204, "Registro atualizado")]
+        [SwaggerResponse(400, "Requisição inválida")]
+        [SwaggerResponse(404, "Informação não encontrada")]
         public ActionResult Put(int id, [FromBody] PersonalizacaoViewModel entity)
         {
             if (entity == null)
@@ -82,6 +92,8 @@ namespace Acai.Api.Controllers
 
         // DELETE: api/Personalizacoes/5
         [HttpDelete("{id}")]
+        [SwaggerResponse(204, "Registro removido")]
+        [SwaggerResponse(404, "Informação não encontrada")]
         public ActionResult Delete(int id)
         {
             var personalizacao = _personalizacaoAppService.GetById(id);

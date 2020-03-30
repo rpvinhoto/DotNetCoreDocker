@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace Acai.Api
 {
@@ -60,6 +61,8 @@ namespace Acai.Api
             var mapperConfig = MapperConfig.Configure();
             var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Açai API", Version = "v1" }); });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -68,6 +71,9 @@ namespace Acai.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Açai API V1"); });
 
             app.UseMvc();
         }

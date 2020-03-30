@@ -2,8 +2,8 @@
 using Acai.Application.Interfaces;
 using Acai.Domain.Entities;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +25,8 @@ namespace Acai.Api.Controllers
 
         // GET: api/Pedidos
         [HttpGet]
+        [SwaggerResponse(200, "Todos os registros")]
+        [SwaggerResponse(204, "Não existe registros")]
         public ActionResult Get()
         {
             var pedidos = _pedidoAppService.GetAll();
@@ -45,6 +47,8 @@ namespace Acai.Api.Controllers
 
         // GET: api/Pedidos/5
         [HttpGet("{id}", Name = "PedidoGetById")]
+        [SwaggerResponse(200, "Informações do registros")]
+        [SwaggerResponse(404, "Registro não encontrado")]
         public ActionResult Get(int id)
         {
             var pedido = _pedidoAppService.GetById(id);
@@ -59,6 +63,9 @@ namespace Acai.Api.Controllers
 
         // POST: api/Pedidos
         [HttpPost]
+        [SwaggerResponse(201, "Registro criado")]
+        [SwaggerResponse(400, "Requisição inválida")]
+        [SwaggerResponse(404, "Informação não encontrada")]
         public ActionResult Post([FromBody] PedidoViewModel entity)
         {
             try
