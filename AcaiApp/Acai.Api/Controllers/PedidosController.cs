@@ -3,7 +3,6 @@ using Acai.Application.Interfaces;
 using Acai.Domain.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +10,7 @@ using System.Linq;
 namespace Acai.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Produces("application/json")]
     [ApiController]
     public class PedidosController : ControllerBase
     {
@@ -24,9 +24,15 @@ namespace Acai.Api.Controllers
         }
 
         // GET: api/Pedidos
+        /// <summary>
+        /// Listar todos os pedidos
+        /// </summary>
+        /// <returns>Retorna todos os pedidos</returns>
+        /// <response code="200">Todos os pedidos cadastrados</response>
+        /// <response code="204">Não existe pedidos cadastrados</response>
         [HttpGet]
-        [SwaggerResponse(200, "Todos os registros")]
-        [SwaggerResponse(204, "Não existe registros")]
+        [ProducesResponseType(typeof(IEnumerable<DetalhesPedidoViewModel>), 200)]
+        [ProducesResponseType(204)]
         public ActionResult Get()
         {
             var pedidos = _pedidoAppService.GetAll();
@@ -46,9 +52,15 @@ namespace Acai.Api.Controllers
         }
 
         // GET: api/Pedidos/5
+        /// <summary>
+        /// Obter um pedido
+        /// </summary>
+        /// <returns>Retorna o pedido pesquisado</returns>
+        /// <response code="200">Informações do registro</response>
+        /// <response code="404">Registro não encontrado</response>
         [HttpGet("{id}", Name = "PedidoGetById")]
-        [SwaggerResponse(200, "Informações do registros")]
-        [SwaggerResponse(404, "Registro não encontrado")]
+        [ProducesResponseType(typeof(DetalhesPedidoViewModel), 200)]
+        [ProducesResponseType(404)]
         public ActionResult Get(int id)
         {
             var pedido = _pedidoAppService.GetById(id);
@@ -62,10 +74,17 @@ namespace Acai.Api.Controllers
         }
 
         // POST: api/Pedidos
+        /// <summary>
+        /// Inserir um pedido
+        /// </summary>
+        /// <returns>Retorna o registro inserido</returns>
+        /// <response code="201">Registro criado</response>
+        /// <response code="400">Requisição inválida</response>
+        /// <response code="404">Informação não encontrada</response>
         [HttpPost]
-        [SwaggerResponse(201, "Registro criado")]
-        [SwaggerResponse(400, "Requisição inválida")]
-        [SwaggerResponse(404, "Informação não encontrada")]
+        [ProducesResponseType(typeof(DetalhesPedidoViewModel), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public ActionResult Post([FromBody] PedidoViewModel entity)
         {
             try

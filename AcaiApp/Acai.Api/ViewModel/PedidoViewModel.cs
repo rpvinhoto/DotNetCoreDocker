@@ -6,11 +6,11 @@ namespace Acai.Api.ViewModel
 {
     public class PedidoViewModel
     { 
-        [Required(ErrorMessage = "Tamanho é um campo obrigatório.")]
-        public string TamanhoId { get; set; }
+        [Required(ErrorMessage = "TamanhoId é um campo obrigatório.")]
+        public int TamanhoId { get; set; }
 
-        [Required(ErrorMessage = "Sabor é um campo obrigatório.")]
-        public string SaborId { get; set; }
+        [Required(ErrorMessage = "SaborId é um campo obrigatório.")]
+        public int SaborId { get; set; }
 
         public IEnumerable<PedidoPersonalizacaoViewModel> Personalizacoes { get; set; }
     }

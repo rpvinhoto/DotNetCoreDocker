@@ -13,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace Acai.Api
 {
@@ -62,7 +65,13 @@ namespace Acai.Api
             var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Açai API", Version = "v1" }); });
+            services.AddSwaggerGen(c => 
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Açai API", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

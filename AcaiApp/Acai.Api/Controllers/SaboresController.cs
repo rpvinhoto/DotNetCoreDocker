@@ -3,13 +3,13 @@ using Acai.Application.Interfaces;
 using Acai.Domain.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Acai.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Produces("application/json")]
     [ApiController]
     public class SaboresController : ControllerBase
     {
@@ -23,9 +23,15 @@ namespace Acai.Api.Controllers
         }
 
         // GET: api/Sabores
+        /// <summary>
+        /// Listar todos os sabores
+        /// </summary>
+        /// <returns>Retorna todos os sabores</returns>
+        /// <response code="200">Todos os sabores cadastrados</response>
+        /// <response code="204">Não existe sabores cadastrados</response>
         [HttpGet]
-        [SwaggerResponse(200, "Todos os registros")]
-        [SwaggerResponse(204, "Não existe registros")]
+        [ProducesResponseType(typeof(IEnumerable<SaborViewModel>), 200)]
+        [ProducesResponseType(204)]
         public ActionResult Get()
         {
             var sabores = _saborAppService.GetAll();
@@ -37,9 +43,15 @@ namespace Acai.Api.Controllers
         }
 
         // GET: api/Sabores/5
+        /// <summary>
+        /// Obter um sabor
+        /// </summary>
+        /// <returns>Retorna o sabor pesquisado</returns>
+        /// <response code="200">Informações do registro</response>
+        /// <response code="404">Registro não encontrado</response>
         [HttpGet("{id}", Name = "SaborGetById")]
-        [SwaggerResponse(200, "Informações do registro")]
-        [SwaggerResponse(404, "Registro não encontrado")]
+        [ProducesResponseType(typeof(SaborViewModel), 200)]
+        [ProducesResponseType(404)]
         public ActionResult Get(int id)
         {
             var sabor = _saborAppService.GetById(id);
@@ -51,9 +63,15 @@ namespace Acai.Api.Controllers
         }
 
         // POST: api/Sabores
+        /// <summary>
+        /// Inserir um sabor
+        /// </summary>
+        /// <returns>Retorna o registro inserido</returns>
+        /// <response code="201">Registro criado</response>
+        /// <response code="400">Requisição inválida</response>
         [HttpPost]
-        [SwaggerResponse(201, "Registro criado")]
-        [SwaggerResponse(400, "Requisição inválida")]
+        [ProducesResponseType(typeof(SaborViewModel), 201)]
+        [ProducesResponseType(400)]
         public ActionResult Post([FromBody] SaborViewModel entity)
         {
             if (entity == null)
@@ -68,10 +86,17 @@ namespace Acai.Api.Controllers
         }
 
         // PUT: api/Sabores/5
+        /// <summary>
+        /// Atualizar um sabor
+        /// </summary>
+        /// <returns>Sem retorno</returns>
+        /// <response code="204">Registro atualizado</response>
+        /// <response code="400">Requisição inválida</response>
+        /// <response code="404">Informação não encontrada</response>
         [HttpPut("{id}")]
-        [SwaggerResponse(204, "Registro atualizado")]
-        [SwaggerResponse(400, "Requisição inválida")]
-        [SwaggerResponse(404, "Informação não encontrada")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public ActionResult Put(int id, [FromBody] SaborViewModel entity)
         {
             if (entity == null)
@@ -91,9 +116,15 @@ namespace Acai.Api.Controllers
         }
 
         // DELETE: api/Sabores/5
+        /// <summary>
+        /// Remover um sabor
+        /// </summary>
+        /// <returns>Sem retorno</returns>
+        /// <response code="204">Registro removido</response>
+        /// <response code="404">Informação não encontrada</response>
         [HttpDelete("{id}")]
-        [SwaggerResponse(204, "Registro removido")]
-        [SwaggerResponse(404, "Informação não encontrada")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public ActionResult Delete(int id)
         {
             var sabor = _saborAppService.GetById(id);

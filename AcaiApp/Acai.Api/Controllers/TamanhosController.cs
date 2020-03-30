@@ -3,13 +3,13 @@ using Acai.Application.Interfaces;
 using Acai.Domain.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Acai.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Produces("application/json")]
     [ApiController]
     public class TamanhosController : ControllerBase
     {
@@ -23,9 +23,15 @@ namespace Acai.Api.Controllers
         }
 
         // GET: api/Tamanhos
+        /// <summary>
+        /// Listar todos os tamanhos
+        /// </summary>
+        /// <returns>Retorna todos os tamanhos</returns>
+        /// <response code="200">Todos os tamanhos cadastrados</response>
+        /// <response code="204">Não existe tamanhos cadastrados</response>
         [HttpGet]
-        [SwaggerResponse(200, "Todos os registros")]
-        [SwaggerResponse(204, "Não existe registros")]
+        [ProducesResponseType(typeof(IEnumerable<TamanhoViewModel>), 200)]
+        [ProducesResponseType(204)]
         public ActionResult Get()
         {
             var tamanhos = _tamanhoAppService.GetAll();
@@ -37,9 +43,15 @@ namespace Acai.Api.Controllers
         }
 
         // GET: api/Tamanhos/5
+        /// <summary>
+        /// Obter um tamanho
+        /// </summary>
+        /// <returns>Retorna o tamanho pesquisado</returns>
+        /// <response code="200">Informações do registro</response>
+        /// <response code="404">Registro não encontrado</response>
         [HttpGet("{id}", Name = "TamanhoGetById")]
-        [SwaggerResponse(200, "Informações do registro")]
-        [SwaggerResponse(404, "Registro não encontrado")]
+        [ProducesResponseType(typeof(TamanhoViewModel), 200)]
+        [ProducesResponseType(404)]
         public ActionResult Get(int id)
         {
             var tamanho = _tamanhoAppService.GetById(id);
@@ -51,9 +63,15 @@ namespace Acai.Api.Controllers
         }
 
         // POST: api/Tamanhos
+        /// <summary>
+        /// Inserir um tamanho
+        /// </summary>
+        /// <returns>Retorna o registro inserido</returns>
+        /// <response code="201">Registro criado</response>
+        /// <response code="400">Requisição inválida</response>
         [HttpPost]
-        [SwaggerResponse(201, "Registro criado")]
-        [SwaggerResponse(400, "Requisição inválida")]
+        [ProducesResponseType(typeof(TamanhoViewModel), 201)]
+        [ProducesResponseType(400)]
         public ActionResult Post([FromBody] TamanhoViewModel entity)
         {
             if (entity == null)
@@ -68,10 +86,17 @@ namespace Acai.Api.Controllers
         }
 
         // PUT: api/Tamanhos/5
+        /// <summary>
+        /// Atualizar um tamanho
+        /// </summary>
+        /// <returns>Sem retorno</returns>
+        /// <response code="204">Registro atualizado</response>
+        /// <response code="400">Requisição inválida</response>
+        /// <response code="404">Informação não encontrada</response>
         [HttpPut("{id}")]
-        [SwaggerResponse(204, "Registro atualizado")]
-        [SwaggerResponse(400, "Requisição inválida")]
-        [SwaggerResponse(404, "Informação não encontrada")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public ActionResult Put(int id, [FromBody] TamanhoViewModel entity)
         {
             if (entity == null)
@@ -91,9 +116,15 @@ namespace Acai.Api.Controllers
         }
 
         // DELETE: api/Tamanhos/5
+        /// <summary>
+        /// Remover um tamanho
+        /// </summary>
+        /// <returns>Sem retorno</returns>
+        /// <response code="204">Registro removido</response>
+        /// <response code="404">Informação não encontrada</response>
         [HttpDelete("{id}")]
-        [SwaggerResponse(204, "Registro removido")]
-        [SwaggerResponse(404, "Informação não encontrada")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public ActionResult Delete(int id)
         {
             var tamanho = _tamanhoAppService.GetById(id);
