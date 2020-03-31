@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Acai.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Acai.Api.Controllers.PedidosController.Get">
+            <summary>
+            Listar todos os pedidos
+            </summary>
+            <returns>Retorna todos os pedidos</returns>
+            <response code="200">Todos os pedidos cadastrados</response>
+            <response code="204">Não existe pedidos cadastrados</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.PedidosController.Get(System.Int32)">
+            <summary>
+            Obter um pedido
+            </summary>
+            <returns>Retorna o pedido pesquisado</returns>
+            <response code="200">Informações do registro</response>
+            <response code="404">Registro não encontrado</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.PedidosController.Post(Acai.Api.ViewModel.PedidoViewModel)">
+            <summary>
+            Inserir um pedido
+            </summary>
+            <returns>Retorna o registro inserido</returns>
+            <response code="201">Registro criado</response>
+            <response code="400">Requisição inválida</response>
+            <response code="404">Informação não encontrada</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.PersonalizacoesController.Get">
+            <summary>
+            Listar todas as personalizações
+            </summary>
+            <returns>Retorna todas as personalizações</returns>
+            <response code="200">Todas as personalizações cadastrados</response>
+            <response code="204">Não existe personalizações cadastradas</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.PersonalizacoesController.Get(System.Int32)">
+            <summary>
+            Obter uma personalização
+            </summary>
+            <returns>Retorna a personalização pesquisada</returns>
+            <response code="200">Informações do registro</response>
+            <response code="404">Registro não encontrado</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.PersonalizacoesController.Post(Acai.Api.ViewModel.PersonalizacaoViewModel)">
+            <summary>
+            Inserir uma personalização
+            </summary>
+            <returns>Retorna o registro inserido</returns>
+            <response code="201">Registro criado</response>
+            <response code="400">Requisição inválida</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.PersonalizacoesController.Put(System.Int32,Acai.Api.ViewModel.PersonalizacaoViewModel)">
+            <summary>
+            Atualizar uma personalização
+            </summary>
+            <returns>Sem retorno</returns>
+            <response code="204">Registro atualizado</response>
+            <response code="400">Requisição inválida</response>
+            <response code="404">Informação não encontrada</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.PersonalizacoesController.Delete(System.Int32)">
+            <summary>
+            Remover uma personalização
+            </summary>
+            <returns>Sem retorno</returns>
+            <response code="204">Registro removido</response>
+            <response code="404">Informação não encontrada</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.SaboresController.Get">
+            <summary>
+            Listar todos os sabores
+            </summary>
+            <returns>Retorna todos os sabores</returns>
+            <response code="200">Todos os sabores cadastrados</response>
+            <response code="204">Não existe sabores cadastrados</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.SaboresController.Get(System.Int32)">
+            <summary>
+            Obter um sabor
+            </summary>
+            <returns>Retorna o sabor pesquisado</returns>
+            <response code="200">Informações do registro</response>
+            <response code="404">Registro não encontrado</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.SaboresController.Post(Acai.Api.ViewModel.SaborViewModel)">
+            <summary>
+            Inserir um sabor
+            </summary>
+            <returns>Retorna o registro inserido</returns>
+            <response code="201">Registro criado</response>
+            <response code="400">Requisição inválida</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.SaboresController.Put(System.Int32,Acai.Api.ViewModel.SaborViewModel)">
+            <summary>
+            Atualizar um sabor
+            </summary>
+            <returns>Sem retorno</returns>
+            <response code="204">Registro atualizado</response>
+            <response code="400">Requisição inválida</response>
+            <response code="404">Informação não encontrada</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.SaboresController.Delete(System.Int32)">
+            <summary>
+            Remover um sabor
+            </summary>
+            <returns>Sem retorno</returns>
+            <response code="204">Registro removido</response>
+            <response code="404">Informação não encontrada</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.TamanhosController.Get">
+            <summary>
+            Listar todos os tamanhos
+            </summary>
+            <returns>Retorna todos os tamanhos</returns>
+            <response code="200">Todos os tamanhos cadastrados</response>
+            <response code="204">Não existe tamanhos cadastrados</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.TamanhosController.Get(System.Int32)">
+            <summary>
+            Obter um tamanho
+            </summary>
+            <returns>Retorna o tamanho pesquisado</returns>
+            <response code="200">Informações do registro</response>
+            <response code="404">Registro não encontrado</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.TamanhosController.Post(Acai.Api.ViewModel.TamanhoViewModel)">
+            <summary>
+            Inserir um tamanho
+            </summary>
+            <returns>Retorna o registro inserido</returns>
+            <response code="201">Registro criado</response>
+            <response code="400">Requisição inválida</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.TamanhosController.Put(System.Int32,Acai.Api.ViewModel.TamanhoViewModel)">
+            <summary>
+            Atualizar um tamanho
+            </summary>
+            <returns>Sem retorno</returns>
+            <response code="204">Registro atualizado</response>
+            <response code="400">Requisição inválida</response>
+            <response code="404">Informação não encontrada</response>
+        </member>
+        <member name="M:Acai.Api.Controllers.TamanhosController.Delete(System.Int32)">
+            <summary>
+            Remover um tamanho
+            </summary>
+            <returns>Sem retorno</returns>
+            <response code="204">Registro removido</response>
+            <response code="404">Informação não encontrada</response>
+        </member>
+    </members>
+</doc>
